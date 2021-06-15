@@ -1,4 +1,4 @@
-# codefix-example
+# ts-codefix-api-example
 
 Exercise showing how to get codefixes for a TypeScript project, setting up with [`@ts-morph/bootstrap`](https://www.npmjs.com/package/@ts-morph/bootstrap).
 
