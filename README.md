@@ -4,7 +4,7 @@ Exercise showing how to get codefixes for a TypeScript project, setting up with 
 
 ## Instructions
 
-Install dependencies:
+Clone the repository and install dependencies:
 
 ```
 npm install
