@@ -1,5 +1,5 @@
 import path from "path";
-import { exampleProjectFileList, exampleProjectSemanticErrors, exampleProjectCodeFixes } from "./index";
+import { exampleProjectFileList, exampleProjectSemanticErrors, exampleProjectCodeFixes, applyChanges } from "./index";
 
 function relative(fileName: string) {
   return path.relative(__dirname, path.normalize(fileName));
@@ -67,4 +67,67 @@ Array [
   },
 ]
 `);
+});
+
+const testFileContent: string = `class Base {
+  foo() {
+    console.log("called foo in Base");
+  }
+
+  bar() {
+    console.log("called bar in Base");
+  }
+}
+
+class Derived extends Base {
+  foo() {
+    console.log("called foo in Derived");
+    super.foo();
+  }
+
+  bar() {
+    console.log("called bar in Derived");
+  }
+}
+`;
+
+const expectedTestFileContent: string = `class Base {
+  foo() {
+    console.log("called foo in Base");
+  }
+
+  bar() {
+    console.log("called bar in Base");
+  }
+}
+
+class Derived extends Base {
+  override foo() {
+    console.log("called foo in Derived");
+    super.foo();
+  }
+
+  bar() {
+    console.log("called bar in Derived");
+  }
+}
+`;
+
+test("applyChanges", () => {
+  const changes = [{
+    "newText": "override ",
+    "span": {
+      "length": 0,
+      "start": 154,
+    },
+  },
+    {
+      "newText": "override ",
+      "span": {
+        "length": 0,
+        "start": 228,
+      },
+  }];
+
+  expect(applyChanges(testFileContent, changes)).toBe(expectedTestFileContent);
 });
